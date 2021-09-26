@@ -1,2 +1,4 @@
 # microblock
-A minimal blockchain implemented in Python with Flask.
+A minimal blockchain implemented in Python.
+
+Currently under development
