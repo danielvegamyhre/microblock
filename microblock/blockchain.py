@@ -38,7 +38,7 @@ class Blockchain:
             proof_of_work=proof_of_work,
             prev_block_hash=prev_block_hash or self.hash(self.last_block)
         )
-        self.current_transactions = []
+        self.current_transactions: list = []
 
         # append new block to chain and return it
         self.chain.append(block)
@@ -52,14 +52,13 @@ class Blockchain:
         self.current_transactions.append(transaction)
         return len(self.chain) + 1
 
-    
     def hash(self, block: Block) -> str:
         '''Get SHA256 hash of a block.'''
-        serialized:str  = json.dumps(
+        serialized: str  = json.dumps(
             asdict(block),
             sort_keys=True
         )
-        return sha256(serialized).hexdigest()
+        return sha256(serialized.encode()).hexdigest()
 
     @property
     def last_block(self) -> Block:
@@ -72,9 +71,9 @@ class Blockchain:
         Proof of work algorithm which finds a value x such that
         hash(prev_hash + previous_proof + x) starts with 3 0s
         '''
-        last_proof = self.last_block.proof_of_work
-        prev_hash = self.hash(self.last_block)
-        proof = 0
+        last_proof: int = self.last_block.proof_of_work
+        prev_hash: str = self.hash(self.last_block)
+        proof: int = 0
 
         # brute force search for valid proof of work
         while not self.is_valid_proof(proof, last_proof, prev_hash):
@@ -94,8 +93,36 @@ class Blockchain:
 
         must start with 3 0s
         '''
-        guess_str = f'{prev_hash}{last_proof}{proof}'.encode()
-        guess_hash = sha256(guess_str).hexdigest()
+        guess_str = f'{prev_hash}{last_proof}{proof}'
+        guess_hash = sha256(guess_str.encode()).hexdigest()
         return guess_hash[:3] == '000'
         
+    def is_valid_chain(self) -> bool:
+        '''
+        Validate the entire blockchain.
+
+        - Each block's "prev hash" must be correct hash of previous block
+        - Each block's "proof of work" must be valid for that block
+
+        '''
+        i: int = 1
+        while i < len(self.chain):
+            curr_block: Block = self.chain[i]
+            last_block: Block = self.chain[i-1]
+
+            # check prev hash
+            if curr_block.prev_block_hash != self.hash(last_block):
+                print(curr_block.prev_block_hash, '!=', self.hash(last_block))
+                return False
+
+            # check proof of work
+            if not self.is_valid_proof(
+                curr_block.proof_of_work,
+                last_block.proof_of_work, 
+                self.hash(last_block)
+            ):
+                print('invalid proof of work', curr_block.proof_of_work, 'for block', curr_block.index)
+                return False
+            i += 1
+        return True
         
