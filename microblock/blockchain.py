@@ -22,12 +22,12 @@ class Blockchain:
     def __init__(self):
         self.chain: list[Block] = []
         self.current_transactions: list[Transaction] = []
-        self.new_block(0, '0')
+        self.new_block(0, '0') # genesis block
 
     def new_block(
         self, 
-        proof_of_work,
-        prev_block_hash=None
+        proof_of_work: int,
+        prev_block_hash: Optional[str] = None,
     ) -> None:
         '''Creates a new block and add it to the chain.'''
         # create new block and reset current transactions
