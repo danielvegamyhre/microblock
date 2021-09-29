@@ -107,8 +107,7 @@ class Blockchain:
         - Each block's "proof of work" must be valid for that block
 
         '''
-        i: int = 1
-        while i < len(self.chain):
+        for i in range(1, len(self.chain)):
             curr_block: Block = self.chain[i]
             last_block: Block = self.chain[i-1]
 
@@ -125,7 +124,6 @@ class Blockchain:
             ):
                 print('invalid proof of work', curr_block.proof_of_work, 'for block', curr_block.index)
                 return False
-            i += 1
         return True
 
     def add_node(self, node_address: str) -> None:
