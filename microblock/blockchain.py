@@ -3,6 +3,7 @@ from typing import Optional
 from dataclasses import dataclass, asdict
 from hashlib import sha256
 from time import time
+from urllib.parse import urlparse
 
 @dataclass
 class Transaction:
@@ -20,6 +21,7 @@ class Block:
 
 class Blockchain:
     def __init__(self):
+        self.nodes: set = set()
         self.chain: list[Block] = []
         self.current_transactions: list[Transaction] = []
         self.new_block(0, '0') # genesis block
@@ -105,8 +107,7 @@ class Blockchain:
         - Each block's "proof of work" must be valid for that block
 
         '''
-        i: int = 1
-        while i < len(self.chain):
+        for i in range(1, len(self.chain)):
             curr_block: Block = self.chain[i]
             last_block: Block = self.chain[i-1]
 
@@ -123,6 +124,13 @@ class Blockchain:
             ):
                 print('invalid proof of work', curr_block.proof_of_work, 'for block', curr_block.index)
                 return False
-            i += 1
         return True
-        
+
+    def add_node(self, node_address: str) -> None:
+        url_obj = urlparse(node_address)        
+        if url_obj.netloc:
+            self.nodes.add(url_obj.netloc)
+        elif url_obj.path:
+            self.nodes.add(url_obj.path)
+        else:
+            raise ValueError(f'Invalid node address: {node_address}')
