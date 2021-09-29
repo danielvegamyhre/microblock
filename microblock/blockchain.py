@@ -135,4 +135,4 @@ class Blockchain:
         elif url_obj.path:
             self.nodes.add(url_obj.path)
         else:
-            raise ValueError(f'Invalid node address: {address}')
+            raise ValueError(f'Invalid node address: {node_address}')
