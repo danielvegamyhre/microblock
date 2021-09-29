@@ -7,4 +7,3 @@ local_chain = Blockchain()
 # set up node
 app = Flask(__name__)
 from microblock import node
-app.run(host='0.0.0.0', port=5000)
