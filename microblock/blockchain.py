@@ -3,6 +3,7 @@ from typing import Optional
 from dataclasses import dataclass, asdict
 from hashlib import sha256
 from time import time
+from urllib.parse import urlparse
 
 @dataclass
 class Transaction:
@@ -20,6 +21,7 @@ class Block:
 
 class Blockchain:
     def __init__(self):
+        self.nodes: set = set()
         self.chain: list[Block] = []
         self.current_transactions: list[Transaction] = []
         self.new_block(0, '0') # genesis block
@@ -125,4 +127,12 @@ class Blockchain:
                 return False
             i += 1
         return True
-        
+
+    def add_node(self, node_address: str) -> None:
+        url_obj = urlparse(node_address)        
+        if url_obj.netloc:
+            self.nodes.add(url_obj.netloc)
+        elif url_obj.path:
+            self.nodes.add(url_obj.path)
+        else:
+            raise ValueError(f'Invalid node address: {address}')
