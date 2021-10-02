@@ -127,10 +127,16 @@ class Blockchain:
         return True
 
     def add_node(self, node_address: str) -> None:
-        url_obj = urlparse(node_address)        
+        '''
+        Add new node address to nodes in network.
+        '''
+        url_obj = urlparse(node_address)
+        # validate requirements: scheme, url/IP, port number
+        if not all([url_obj.scheme, url_obj.netloc, url_obj.port]):
+            raise ValueError(f'Invalid node address: {node_address}')
         if url_obj.netloc:
             self.nodes.add(url_obj.netloc)
         elif url_obj.path:
             self.nodes.add(url_obj.path)
-        else:
-            raise ValueError(f'Invalid node address: {node_address}')
+
+    
