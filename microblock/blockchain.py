@@ -26,6 +26,9 @@ class Blockchain:
         self.current_transactions: list[Transaction] = []
         self.new_block(0, '0') # genesis block
 
+    def __len__(self) -> int:
+        return len(self.chain)
+
     def new_block(
         self, 
         proof_of_work: int,
@@ -134,9 +137,5 @@ class Blockchain:
         # validate requirements: scheme, url/IP, port number
         if not all([url_obj.scheme, url_obj.netloc, url_obj.port]):
             raise ValueError(f'Invalid node address: {node_address}')
-        if url_obj.netloc:
-            self.nodes.add(url_obj.netloc)
-        elif url_obj.path:
-            self.nodes.add(url_obj.path)
-
+        self.nodes.add(node_address)
     

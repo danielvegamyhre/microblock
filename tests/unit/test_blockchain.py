@@ -8,6 +8,7 @@ def test_genesis_block(new_blockchain):
 def test_add_valid_node(new_blockchain):
     valid_node: str = 'http://192.168.1.1:5000'
     assert new_blockchain.add_node(valid_node) is None
+    assert valid_node in new_blockchain.nodes
 
 def test_add_invalid_node(new_blockchain):
     invalid_nodes: list[str] = [
