@@ -1,9 +1,11 @@
 import json
-from typing import Optional
+import requests
+from typing import Optional, Union
 from dataclasses import dataclass, asdict
 from hashlib import sha256
 from time import time
 from urllib.parse import urlparse
+
 
 @dataclass
 class Transaction:
@@ -49,11 +51,13 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    def new_transaction(self, transaction: Transaction) -> int:
+    def new_transaction(self, transaction: Union[dict, Transaction]) -> int:
         '''
         Add a new transction to list of current transactions.
         Returns index of block that will hold this transaction.
         '''
+        if not isinstance(transaction, Transaction):
+            transaction = Transaction(**transaction)
         self.current_transactions.append(transaction)
         return len(self.chain) + 1
 
@@ -139,3 +143,14 @@ class Blockchain:
             raise ValueError(f'Invalid node address: {node_address}')
         self.nodes.add(node_address)
     
+    def consensus(self) -> Optional[list[Block]]:
+        # consensus is to use the longest chain in the network
+        replaced = False
+        for node in self.nodes:
+            res = requests.get(f'{node}/chain')
+            node_chain = res.json()
+            if len(node_chain) > len(self.chain):
+                self.chain = [Block(**block) for block in node_chain]
+                replaced = True        
+        if replaced:
+            return self.chain
