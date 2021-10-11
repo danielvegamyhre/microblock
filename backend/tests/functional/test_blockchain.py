@@ -1,4 +1,4 @@
-from tests.test_utils import random_transaction
+from backend.tests.test_utils import random_transaction
 
 
 def test_chained_blocks(new_blockchain):
