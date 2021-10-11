@@ -1,9 +1,10 @@
 from flask import Flask
-from microblock.blockchain import Blockchain
+
+from backend.blockchain import Blockchain
 
 # set up local instance of blockchain
 local_chain = Blockchain()
 
 # set up node
 app = Flask(__name__)
-from microblock import node
+from backend import api  # noqa: F401,E402

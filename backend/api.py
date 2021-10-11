@@ -1,6 +1,6 @@
-from flask import request, jsonify, Response
-from microblock import app, local_chain
-from dataclasses import asdict
+from flask import jsonify, request
+
+from backend import app, local_chain
 
 
 @app.route("/nodes", methods=["GET"])
@@ -31,8 +31,7 @@ def get_chain():
 
 @app.route("/consensus", methods=["GET"])
 def get_longest_chain():
-    result = local_chain.consensus()
-    if result:
+    if local_chain.consensus():
         response = {"message": "local chain replaced", "chain": local_chain.chain}
     else:
         response = {
