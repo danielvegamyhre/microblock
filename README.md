@@ -12,5 +12,4 @@ A minimal blockchain implementation with an interactive user interface which all
 
 ### Steps to Run
 1. From the root directory, run `docker-compose up`
-2. Once this builds the images and initializes the containers, you can navigate to `http://0.0.0.0:3000` in your browser to interact with the application. **NOTE**: 
-3. Also, the backend API to interact with the blockchain directly is on port 5000.
+2. Once this builds the images and initializes the containers, you can navigate to `http://0.0.0.0:3000` in your browser to interact with the application (also, the backend API to interact with the blockchain directly is on port 5000).
