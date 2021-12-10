@@ -1,0 +1,25 @@
+.miner {
+    color: white;
+    background-color: green;
+    font-size: 14px;
+    font-family: monospace;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    border-color: white;
+    margin-bottom: 20px;
+    margin-left: 30%;
+}
+
+.miner:hover {
+    background-color: rgb(1, 68, 1);
+    border-color: green;
+}

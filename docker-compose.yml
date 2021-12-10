@@ -4,11 +4,13 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.backend
+        image: microblock-backend
         ports:
             - 5000:5000
     client:
         build:
             context: .
             dockerfile: Dockerfile.client
+        image: microblock-client
         ports:
-            - 3000:80
+            - 3000:3000

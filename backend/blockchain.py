@@ -142,7 +142,9 @@ class Blockchain:
         self.nodes.add(node_address)
 
     def consensus(self) -> bool:
-        # consensus is to use the longest chain in the network
+        """
+        Distributed consensus to agree on the longest chain in the network.
+        """
         replaced = False
         for node in self.nodes:
             res = requests.get(f"{node}/chain")
